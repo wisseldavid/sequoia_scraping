@@ -31,7 +31,11 @@ def main() -> int:
 
     delay()
     r: requests.Response = requests.get(base)
-    soup: bs4.BeautifulSoup = BeautifulSoup(r.content, "html.parser")
+    if r.status_code == 200:
+        soup: bs4.BeautifulSoup = BeautifulSoup(r.content, "html.parser")
+    else:
+        raise RuntimeError("Request to Sequoia main portfolio page"
+                           + "returned non-200 HTTP code.")
 
     for company in soup.find_all(
         "div", {"class": "companies _company js-company"}
@@ -42,7 +46,11 @@ def main() -> int:
         # Send request to the detail company page
         # and parse it using BeautifulSoup.
         r = requests.get("https://www.sequoiacap.com" + company["data-url"])
-        detailed_soup = BeautifulSoup(r.content, "html.parser")
+        if r.status_code == 200:
+            detailed_soup = BeautifulSoup(r.content, "html.parser")
+        else:
+            raise RuntimeError(f"Request to {name} detail page"
+                               + "returned non-200 HTTP code.")
 
         # Parse company url.
         url = detailed_soup.find_all("a", {"class": "social-link"})
