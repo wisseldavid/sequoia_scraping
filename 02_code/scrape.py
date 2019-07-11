@@ -106,7 +106,7 @@ def main() -> int:
 
     # Write scraped data to disk.
     df: pd.DataFrame = pd.DataFrame(content)
-    df.to_csv("../01_data/requests_output.csv",
+    df.to_csv("../01_data/sequoia_portfolio.csv",
               index=False,
               sep=",",
               encoding="utf-8")
