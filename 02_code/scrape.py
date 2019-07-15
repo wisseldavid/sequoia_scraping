@@ -8,6 +8,7 @@ import sys
 import time
 
 import bs4
+import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
@@ -114,6 +115,7 @@ def main() -> int:
 
     # Write scraped data to disk.
     df: pd.DataFrame = pd.DataFrame(content)
+    df = df.replace("", np.nan).fillna(value="NA")
     df.to_csv("../01_data/sequoia_portfolio.csv",
               index=False,
               sep=",",
